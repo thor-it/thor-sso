@@ -24,6 +24,7 @@ using Volo.Abp.Modularity;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
 using Thor.SSO.Extensions;
+using IdentityServer4;
 
 namespace Thor.SSO
 {
@@ -99,7 +100,7 @@ namespace Thor.SSO
         private void ConfigureAuthentication(ServiceConfigurationContext context, IConfiguration configuration)
         {
             context.Services.AddAuthentication()
-            .AddJwtBearer(options =>
+            .AddJwtBearer("Bearer", options =>
             {
                 options.Authority = configuration["AuthServer:Authority"];
                 options.TokenValidationParameters.ValidIssuer = configuration["AuthServer:ValidIssuer"];
@@ -110,7 +111,13 @@ namespace Thor.SSO
                     ServerCertificateCustomValidationCallback =
                         HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
                 };
-            });
+            })
+            .AddGoogle("Google", options =>
+            {
+                options.ClientId = configuration["SingleSignOn:Google:ClientId"];
+                options.ClientSecret = configuration["SingleSignOn:Google:ClientSecret"];
+                options.Scope.Add("email");
+            }); ;
         }
 
         private static void ConfigureSwaggerServices(ServiceConfigurationContext context)
