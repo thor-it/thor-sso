@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  thor.sso.httpapi.host:
+    image: ${DOCKER_REGISTRY-}thorssohttpapihost
+    build:
+      context: .
+      dockerfile: src/Thor.SSO.HttpApi.Host/Dockerfile
