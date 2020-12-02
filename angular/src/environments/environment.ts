@@ -6,11 +6,11 @@ export const environment = {
   production: false,
   application: {
     baseUrl,
-    name: 'SSO',
+    name: 'SRC Thor - Member Portal',
     logoUrl: '',
   },
   oAuthConfig: {
-    issuer: 'https://localhost:44328',
+    issuer: 'https://localhost:44333',
     redirectUri: baseUrl,
     clientId: 'SSO_App',
     responseType: 'code',
@@ -18,7 +18,7 @@ export const environment = {
   },
   apis: {
     default: {
-      url: 'https://localhost:44328',
+      url: 'https://localhost:44333',
       rootNamespace: 'Thor.SSO',
     },
   },
