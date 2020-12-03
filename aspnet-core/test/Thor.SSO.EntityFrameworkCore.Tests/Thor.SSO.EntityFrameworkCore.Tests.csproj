@@ -10,7 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Thor.SSO.EntityFrameworkCore.DbMigrations\Thor.SSO.EntityFrameworkCore.DbMigrations.csproj" />
     <ProjectReference Include="..\Thor.SSO.TestBase\Thor.SSO.TestBase.csproj" />
-    <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="3.3.2" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="4.0.0" />
   </ItemGroup>
 
   <ItemGroup>
