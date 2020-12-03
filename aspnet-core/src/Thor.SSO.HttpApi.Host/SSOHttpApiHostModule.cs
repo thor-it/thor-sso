@@ -48,6 +48,7 @@ namespace Thor.SSO
             var configuration = context.Services.GetConfiguration();
             var hostingEnvironment = context.Services.GetHostingEnvironment();
 
+            ConfigureMetrics(context, configuration);
             ConfigureUrls(configuration);
             ConfigureConventionalControllers();
             ConfigureAuthentication(context, configuration);
@@ -55,6 +56,11 @@ namespace Thor.SSO
             ConfigureVirtualFileSystem(context);
             ConfigureCors(context, configuration);
             ConfigureSwaggerServices(context);
+        }
+
+        private void ConfigureMetrics(ServiceConfigurationContext context, IConfiguration configuration)
+        {
+            context.Services.AddAppMetricsInfluxDbMetrics(configuration);
         }
 
         private void ConfigureUrls(IConfiguration configuration)
@@ -69,7 +75,7 @@ namespace Thor.SSO
         {
             var hostingEnvironment = context.Services.GetHostingEnvironment();
 
-            if (hostingEnvironment.IsDevelopment() && !EnvironmentExtensions.IsDockerEnvironment())
+            if (hostingEnvironment.IsDevelopment() && !EnvironmentExtension.IsDockerEnvironment())
             {
                 Configure<AbpVirtualFileSystemOptions>(options =>
                 {
@@ -100,24 +106,24 @@ namespace Thor.SSO
         private void ConfigureAuthentication(ServiceConfigurationContext context, IConfiguration configuration)
         {
             context.Services.AddAuthentication()
-            .AddJwtBearer("Bearer", options =>
-            {
-                options.Authority = configuration["AuthServer:Authority"];
-                options.TokenValidationParameters.ValidIssuer = configuration["AuthServer:ValidIssuer"];
-                options.RequireHttpsMetadata = Convert.ToBoolean(configuration["AuthServer:RequireHttpsMetadata"]);
-                options.Audience = "SSO";
-                options.BackchannelHttpHandler = new HttpClientHandler
+                .AddJwtBearer("Bearer", options =>
                 {
-                    ServerCertificateCustomValidationCallback =
-                        HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-                };
-            })
-            .AddGoogle("Google", options =>
-            {
-                options.ClientId = configuration["SingleSignOn:Google:ClientId"];
-                options.ClientSecret = configuration["SingleSignOn:Google:ClientSecret"];
-                options.Scope.Add("email");
-            }); ;
+                    options.Authority = configuration["AuthServer:Authority"];
+                    options.TokenValidationParameters.ValidIssuer = configuration["AuthServer:ValidIssuer"];
+                    options.RequireHttpsMetadata = Convert.ToBoolean(configuration["AuthServer:RequireHttpsMetadata"]);
+                    options.Audience = "SSO";
+                    options.BackchannelHttpHandler = new HttpClientHandler
+                    {
+                        ServerCertificateCustomValidationCallback =
+                            HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                    };
+                })
+                .AddGoogle("Google", options =>
+                {
+                    options.ClientId = configuration["SingleSignOn:Google:ClientId"];
+                    options.ClientSecret = configuration["SingleSignOn:Google:ClientSecret"];
+                    options.Scope.Add("email");
+                });
         }
 
         private static void ConfigureSwaggerServices(ServiceConfigurationContext context)
@@ -189,6 +195,7 @@ namespace Thor.SSO
             app.UseCorrelationId();
             app.UseVirtualFiles();
             app.UseRouting();
+            app.UseAppMetricsMiddleware();
             app.UseCors(DefaultCorsPolicyName);
             app.UseAuthentication();
             app.UseJwtTokenMiddleware();

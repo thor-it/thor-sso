@@ -3,11 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Thor.SSO.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ValuesController : ControllerBase
+    public class ValuesController : SSOController
     {
-
         [Authorize, HttpGet]
         public string ResponseEndpoint()
         {
