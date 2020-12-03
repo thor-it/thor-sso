@@ -25,6 +25,7 @@ using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
 using Thor.SSO.Extensions;
 using IdentityServer4;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Thor.SSO
 {
@@ -105,8 +106,9 @@ namespace Thor.SSO
 
         private void ConfigureAuthentication(ServiceConfigurationContext context, IConfiguration configuration)
         {
-            context.Services.AddAuthentication()
-                .AddJwtBearer("Bearer", options =>
+            context.Services
+                .AddAuthentication()
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
                     options.Authority = configuration["AuthServer:Authority"];
                     options.TokenValidationParameters.ValidIssuer = configuration["AuthServer:ValidIssuer"];

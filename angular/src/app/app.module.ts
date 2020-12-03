@@ -1,4 +1,3 @@
-import { AccountConfigModule } from '@abp/ng.account/config';
 import { CoreModule } from '@abp/ng.core';
 import { IdentityConfigModule } from '@abp/ng.identity/config';
 import { SettingManagementConfigModule } from '@abp/ng.setting-management/config';
@@ -13,6 +12,7 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { APP_ROUTE_PROVIDER } from './route.provider';
+import { registerLocale } from '@abp/ng.core/locale';
 
 @NgModule({
   imports: [
@@ -21,17 +21,18 @@ import { APP_ROUTE_PROVIDER } from './route.provider';
     AppRoutingModule,
     CoreModule.forRoot({
       environment,
+      registerLocaleFn: registerLocale()
     }),
     ThemeSharedModule.forRoot(),
-    AccountConfigModule.forRoot(),
     IdentityConfigModule.forRoot(),
     TenantManagementConfigModule.forRoot(),
     SettingManagementConfigModule.forRoot(),
     NgxsModule.forRoot(),
-    ThemeBasicModule.forRoot(),
+    ThemeBasicModule.forRoot()
   ],
   declarations: [AppComponent],
   providers: [APP_ROUTE_PROVIDER],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+}

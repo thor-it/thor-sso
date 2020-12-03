@@ -22,8 +22,8 @@ namespace Thor.SSO.Extensions
                         config.Enabled = true;
                         config.ReportingEnabled = true;
                     });
-                    var database = "appmetricsdemo";
-                    options.Report.ToInfluxDb("http://influxdb:8086", database, TimeSpan.FromSeconds(5));
+                    //var database = "appmetricsdemo";
+                    //options.Report.ToInfluxDb("http://influxdb:8086", database, TimeSpan.FromSeconds(5));
                 })
                 .AddMetricsReportingHostedService()
                 .AddMetricsTrackingMiddleware(options =>

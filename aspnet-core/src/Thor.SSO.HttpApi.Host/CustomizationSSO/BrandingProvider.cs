@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Components;
-using Volo.Abp.DependencyInjection;
+﻿using Volo.Abp.DependencyInjection;
+using Volo.Abp.Ui.Branding;
 
 namespace Thor.SSO.CustomizationSSO
 {

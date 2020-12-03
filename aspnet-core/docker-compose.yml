@@ -36,7 +36,7 @@ services:
             - "8086:8086"
             - "8090:8090"
         environment:
-            - INFLUXDB_DB=appmetricsdemo
+            - INFLUXDB_DB=thorsso_metrics
             - INFLUXDB_ADMIN_USER=admin
             - INFLUXDB_ADMIN_PASSWORD=admin
         volumes:
