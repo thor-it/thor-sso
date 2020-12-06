@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>7f0ee466-e520-47fc-b908-68b9f8a7430f</ProjectGuid>
+    <ProjectGuid>7ec9e5cd-46be-4f77-93b8-d97e8a0d5bcd</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
     <DockerServiceName>thor.sso.httpapi.host</DockerServiceName>

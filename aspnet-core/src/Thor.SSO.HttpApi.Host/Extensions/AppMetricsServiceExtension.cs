@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Collections.Generic;
 
 namespace Thor.SSO.Extensions
@@ -22,8 +21,6 @@ namespace Thor.SSO.Extensions
                         config.Enabled = true;
                         config.ReportingEnabled = true;
                     });
-                    //var database = "appmetricsdemo";
-                    //options.Report.ToInfluxDb("http://influxdb:8086", database, TimeSpan.FromSeconds(5));
                 })
                 .AddMetricsReportingHostedService()
                 .AddMetricsTrackingMiddleware(options =>

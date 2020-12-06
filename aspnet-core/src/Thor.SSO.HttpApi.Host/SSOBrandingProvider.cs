@@ -1,10 +1,10 @@
 ﻿using Volo.Abp.DependencyInjection;
 using Volo.Abp.Ui.Branding;
 
-namespace Thor.SSO.CustomizationSSO
+namespace Thor.SSO
 {
     [Dependency(ReplaceServices = true)]
-    public class MyProjectBrandingProvider : DefaultBrandingProvider
+    public class SSOBrandingProvider : DefaultBrandingProvider
     {
         public override string AppName => "SRC Thor - Single Sign-On";
     }

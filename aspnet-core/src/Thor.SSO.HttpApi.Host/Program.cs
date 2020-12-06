@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using App.Metrics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -80,7 +80,7 @@ namespace Thor.SSO
                 {
                     webBuilder.UseStartup<Startup>();
                 })
-                .UseSerilog()
-                .UseAutofac();
+                .UseAutofac()
+                .UseSerilog();
     }
 }
