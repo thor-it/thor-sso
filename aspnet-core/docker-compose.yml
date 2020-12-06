@@ -1,8 +1,53 @@
 version: '3.4'
 
 services:
-  thor.sso.httpapi.host:
-    image: ${DOCKER_REGISTRY-}thorssohttpapihost
-    build:
-      context: .
-      dockerfile: src/Thor.SSO.HttpApi.Host/Dockerfile
+    thor.sso.httpapi.host:
+        image: ${DOCKER_REGISTRY-}thorssohttpapihost
+        container_name: thor_sso
+        build:
+            context: .
+            dockerfile: src/Thor.SSO.HttpApi.Host/Dockerfile
+        networks:
+            - loki
+    loki:
+        image: grafana/loki:1.6.0
+        container_name: loki
+        ports:
+            - "3100:3100"
+        command: -config.file=/etc/loki/local-config.yaml
+        networks:
+            - loki
+    grafana:
+        container_name: grafana
+        image: grafana/grafana:latest
+        ports:
+            - 3000:3000
+        environment:
+            - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-piechart-panel,briangann-gauge-panel,natel-plotly-panel,grafana-simple-json-datasource
+        volumes:
+            - grafana:/var/lib/grafana
+        networks:
+            - loki
+    influxdb:
+        image: influxdb:latest
+        container_name: influxdb
+        ports:
+            - "8083:8083"
+            - "8086:8086"
+            - "8090:8090"
+        environment:
+            - INFLUXDB_DB=thorsso_metrics
+            - INFLUXDB_ADMIN_USER=admin
+            - INFLUXDB_ADMIN_PASSWORD=admin
+        volumes:
+            - influxdb:/var/lib/influxdb
+        networks:
+            - loki
+networks:
+    loki:
+        name: dotnet5metricslogsgrafana
+volumes:
+    influxdb:
+        name: thorsso_influxdb
+    grafana:
+        name: thorsso_grafana

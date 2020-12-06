@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -16,15 +17,17 @@ using Volo.Abp.Account.Web;
 using Volo.Abp.AspNetCore.Authentication.JwtBearer;
 using Volo.Abp.AspNetCore.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc;
+using Volo.Abp.AspNetCore.Mvc.UI.Bundling;
+using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Bundling;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Autofac;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
+using Volo.Abp.Swashbuckle;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
 using Thor.SSO.Extensions;
-using IdentityServer4;
 
 namespace Thor.SSO
 {
@@ -37,7 +40,8 @@ namespace Thor.SSO
         typeof(AbpAspNetCoreMvcUiBasicThemeModule),
         typeof(AbpAspNetCoreAuthenticationJwtBearerModule),
         typeof(AbpAccountWebIdentityServerModule),
-        typeof(AbpAspNetCoreSerilogModule)
+        typeof(AbpAspNetCoreSerilogModule),
+        typeof(AbpSwashbuckleModule)
     )]
     public class SSOHttpApiHostModule : AbpModule
     {
@@ -48,6 +52,8 @@ namespace Thor.SSO
             var configuration = context.Services.GetConfiguration();
             var hostingEnvironment = context.Services.GetHostingEnvironment();
 
+            ConfigureBundles();
+            ConfigureAppMetrics(context, configuration); // Configure InfluxDB and AppMetrics services
             ConfigureUrls(configuration);
             ConfigureConventionalControllers();
             ConfigureAuthentication(context, configuration);
@@ -55,6 +61,24 @@ namespace Thor.SSO
             ConfigureVirtualFileSystem(context);
             ConfigureCors(context, configuration);
             ConfigureSwaggerServices(context);
+        }
+
+        private void ConfigureBundles()
+        {
+            Configure<AbpBundlingOptions>(options =>
+            {
+                options.StyleBundles.Configure(
+                    BasicThemeBundles.Styles.Global,
+                    bundle => { bundle.AddFiles("/global-styles.css"); }
+                );
+            });
+        }
+
+        private void ConfigureAppMetrics(ServiceConfigurationContext context, IConfiguration configuration)
+        {
+            if (Convert.ToBoolean(configuration["AppMetrics:Enabled"])) { 
+                context.Services.AddAppMetricsInfluxDbMetrics(configuration);
+            }
         }
 
         private void ConfigureUrls(IConfiguration configuration)
@@ -69,7 +93,7 @@ namespace Thor.SSO
         {
             var hostingEnvironment = context.Services.GetHostingEnvironment();
 
-            if (hostingEnvironment.IsDevelopment() && !EnvironmentExtensions.IsDockerEnvironment())
+            if (hostingEnvironment.IsDevelopment() && !EnvironmentExtension.IsDockerEnvironment())
             {
                 Configure<AbpVirtualFileSystemOptions>(options =>
                 {
@@ -99,25 +123,26 @@ namespace Thor.SSO
 
         private void ConfigureAuthentication(ServiceConfigurationContext context, IConfiguration configuration)
         {
-            context.Services.AddAuthentication()
-            .AddJwtBearer("Bearer", options =>
-            {
-                options.Authority = configuration["AuthServer:Authority"];
-                options.TokenValidationParameters.ValidIssuer = configuration["AuthServer:ValidIssuer"];
-                options.RequireHttpsMetadata = Convert.ToBoolean(configuration["AuthServer:RequireHttpsMetadata"]);
-                options.Audience = "SSO";
-                options.BackchannelHttpHandler = new HttpClientHandler
+            context.Services
+            	.AddAuthentication()
+                .AddJwtBearer(options =>
                 {
-                    ServerCertificateCustomValidationCallback =
-                        HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-                };
-            })
-            .AddGoogle("Google", options =>
-            {
-                options.ClientId = configuration["SingleSignOn:Google:ClientId"];
-                options.ClientSecret = configuration["SingleSignOn:Google:ClientSecret"];
-                options.Scope.Add("email");
-            }); ;
+                    options.Authority = configuration["AuthServer:Authority"];
+                    options.TokenValidationParameters.ValidIssuer = configuration["AuthServer:ValidIssuer"];
+                    options.RequireHttpsMetadata = Convert.ToBoolean(configuration["AuthServer:RequireHttpsMetadata"]);
+                    options.Audience = "SSO";
+                    options.BackchannelHttpHandler = new HttpClientHandler
+                    {
+                        ServerCertificateCustomValidationCallback =
+                            HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                    };
+                })
+                .AddGoogle("Google", options =>
+                {
+                    options.ClientId = configuration["SingleSignOn:Google:ClientId"];
+                    options.ClientSecret = configuration["SingleSignOn:Google:ClientSecret"];
+                    options.Scope.Add("email");
+                });
         }
 
         private static void ConfigureSwaggerServices(ServiceConfigurationContext context)
@@ -144,6 +169,8 @@ namespace Thor.SSO
                 options.Languages.Add(new LanguageInfo("tr", "tr", "Türkçe"));
                 options.Languages.Add(new LanguageInfo("zh-Hans", "zh-Hans", "简体中文"));
                 options.Languages.Add(new LanguageInfo("zh-Hant", "zh-Hant", "繁體中文"));
+                options.Languages.Add(new LanguageInfo("de-DE", "de-DE", "Deutsch", "de"));
+                options.Languages.Add(new LanguageInfo("es", "es", "Español", "es"));
             });
         }
 
@@ -189,6 +216,10 @@ namespace Thor.SSO
             app.UseCorrelationId();
             app.UseVirtualFiles();
             app.UseRouting();
+            if (Convert.ToBoolean(context.GetConfiguration()["AppMetrics:Enabled"]))
+            {
+                app.UseAppMetricsMiddleware();
+            }
             app.UseCors(DefaultCorsPolicyName);
             app.UseAuthentication();
             app.UseJwtTokenMiddleware();
@@ -202,7 +233,10 @@ namespace Thor.SSO
             app.UseAuthorization();
 
             app.UseSwagger();
-            app.UseSwaggerUI(options => { options.SwaggerEndpoint("/swagger/v1/swagger.json", "SSO API"); });
+            app.UseAbpSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "SSO API");
+            });
 
             app.UseAuditing();
             app.UseAbpSerilogEnrichers();
