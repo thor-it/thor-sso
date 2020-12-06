@@ -6,8 +6,7 @@ namespace Thor.SSO.Controllers
 {
     /* Inherit your controllers from this class.
      */
-    [Route("api/[controller]")]
-    [ApiController]
+	[Route("api/[controller]")]
     public abstract class SSOController : AbpController
     {
         protected SSOController()

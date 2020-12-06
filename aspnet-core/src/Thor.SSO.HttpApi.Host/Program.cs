@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using App.Metrics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,7 +26,10 @@ namespace Thor.SSO
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
                 .Enrich.FromLogContext()
-                .WriteTo.GrafanaLoki("http://loki:3100")
+                .If(EnvironmentExtension.IsDockerEnvironment(),
+                    a => a.WriteTo.GrafanaLoki("http://loki:3100"))
+                .If(!EnvironmentExtension.IsDockerEnvironment(),
+                    a => a.WriteTo.GrafanaLoki("http://localhost:3100"))
 #if DEBUG
                 .WriteTo.Async(c => c.Console())
 #endif
@@ -67,14 +70,17 @@ namespace Thor.SSO
                 })
                 .ConfigureMetricsWithDefaults(builder =>
                 {
-                    var database = "appmetricsdemo";
-                    builder.Report.ToInfluxDb("http://influxdb:8086", database, TimeSpan.FromSeconds(5));
+                    builder.Report
+                        .If(!EnvironmentExtension.IsDockerEnvironment(), a =>
+                            a.ToInfluxDb("http://localhost:8086", "thorsso_metrics", TimeSpan.FromSeconds(5)))
+                        .If(EnvironmentExtension.IsDockerEnvironment(), a =>
+                                a.ToInfluxDb("http://influxdb:8086", "thorsso_metrics", TimeSpan.FromSeconds(5)));
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
                 })
-                .UseSerilog()
-                .UseAutofac();
+                .UseAutofac()
+                .UseSerilog();
     }
 }

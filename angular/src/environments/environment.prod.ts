@@ -1,4 +1,4 @@
-import { Config } from '@abp/ng.core';
+import { Environment } from '@abp/ng.core';
 
 const baseUrl = 'http://localhost:4200';
 
@@ -10,7 +10,7 @@ export const environment = {
     logoUrl: '',
   },
   oAuthConfig: {
-    issuer: 'https://localhost:44328',
+    issuer: 'https://localhost:44325',
     redirectUri: baseUrl,
     clientId: 'SSO_App',
     responseType: 'code',
@@ -18,8 +18,8 @@ export const environment = {
   },
   apis: {
     default: {
-      url: 'https://localhost:44328',
+      url: 'https://localhost:44325',
       rootNamespace: 'Thor.SSO',
     },
   },
-} as Config.Environment;
+} as Environment;
