@@ -47,7 +47,7 @@ namespace Thor.SSO.Controllers
         }
 
         // Creates a new scheme
-        [HttpPost("Create/{type}")]
+        [HttpPost("create/{type}")]
         public async Task<IActionResult> Create(AuthenticationViewModel model)
         {
             OAuthOptions oAuthOptions;
@@ -67,7 +67,7 @@ namespace Thor.SSO.Controllers
                         Audience = "Us"
                     }
                 });
-                return new RedirectToActionResult("List", "Scheme", null);
+                return new RedirectToActionResult("list", "Scheme", null);
             }
             else
             {
@@ -125,7 +125,7 @@ namespace Thor.SSO.Controllers
         }
 
         // Updates a scheme
-        [HttpPost("Update/{scheme}")]
+        [HttpPost("update/{scheme}")]
         public async Task Update(AuthenticationViewModel model)
         {
             var definition = await _manager.FindBySchemeAsync(model.Scheme);
@@ -146,7 +146,7 @@ namespace Thor.SSO.Controllers
         }
 
         // Deletes a scheme
-        [HttpPost("Delete/{scheme}")]
+        [HttpPost("delete/{scheme}")]
         public async Task<IActionResult> Delete(string scheme)
         {
             var definition = await _manager.FindBySchemeAsync(scheme);
