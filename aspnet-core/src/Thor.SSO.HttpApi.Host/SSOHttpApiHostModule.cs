@@ -76,7 +76,8 @@ namespace Thor.SSO
 
         private void ConfigureAppMetrics(ServiceConfigurationContext context, IConfiguration configuration)
         {
-            if (Convert.ToBoolean(configuration["AppMetrics:Enabled"])) { 
+            if (Convert.ToBoolean(configuration["AppMetrics:Enabled"]))
+            {
                 context.Services.AddAppMetricsInfluxDbMetrics(configuration);
             }
         }
@@ -112,7 +113,6 @@ namespace Thor.SSO
                 });
             }
         }
-
         private void ConfigureConventionalControllers()
         {
             Configure<AbpAspNetCoreMvcOptions>(options =>
@@ -124,7 +124,7 @@ namespace Thor.SSO
         private void ConfigureAuthentication(ServiceConfigurationContext context, IConfiguration configuration)
         {
             context.Services
-            	.AddAuthentication()
+                  .AddAuthentication()
                 .AddJwtBearer(options =>
                 {
                     options.Authority = configuration["AuthServer:Authority"];
@@ -150,7 +150,7 @@ namespace Thor.SSO
             context.Services.AddSwaggerGen(
                 options =>
                 {
-                    options.SwaggerDoc("v1", new OpenApiInfo {Title = "SSO API", Version = "v1"});
+                    options.SwaggerDoc("v1", new OpenApiInfo { Title = "SSO API", Version = "v1" });
                     options.DocInclusionPredicate((docName, description) => true);
                 });
         }
@@ -229,6 +229,7 @@ namespace Thor.SSO
                 app.UseMultiTenancy();
             }
 
+            // https://github.com/abpframework/abp/blob/dev/modules/identityserver/src/Volo.Abp.IdentityServer.Domain/Volo/Abp/IdentityServer/AbpIdentityServerDomainModule.cs
             app.UseIdentityServer();
             app.UseAuthorization();
 
