@@ -28,6 +28,13 @@ using Volo.Abp.Swashbuckle;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
 using Thor.SSO.Extensions;
+using Aguacongas.AspNetCore.Authentication.EntityFramework;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Newtonsoft.Json.Linq;
+using System.Net.Http.Headers;
+using System.Text.Json;
 
 namespace Thor.SSO
 {
@@ -123,8 +130,8 @@ namespace Thor.SSO
 
         private void ConfigureAuthentication(ServiceConfigurationContext context, IConfiguration configuration)
         {
-            context.Services
-                  .AddAuthentication()
+            var dynamicAuthBuilder = context.Services
+                .AddAuthentication()
                 .AddJwtBearer(options =>
                 {
                     options.Authority = configuration["AuthServer:Authority"];
@@ -137,12 +144,51 @@ namespace Thor.SSO
                             HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
                     };
                 })
-                .AddGoogle("Google", options =>
-                {
-                    options.ClientId = configuration["SingleSignOn:Google:ClientId"];
-                    options.ClientSecret = configuration["SingleSignOn:Google:ClientSecret"];
-                    options.Scope.Add("email");
-                });
+                .AddDynamic<SchemeDefinition>()
+                .AddEntityFrameworkStore<SchemeDbContext>();
+
+            dynamicAuthBuilder
+                .AddGoogle()
+                .AddOAuth("Github", "Github", null);
+                //.AddGoogle("Google", options =>
+                //{
+                //    options.ClientId = configuration["SingleSignOn:Google:ClientId"];
+                //    options.ClientSecret = configuration["SingleSignOn:Google:ClientSecret"];
+                //    options.Scope.Add("email");
+                //})
+                //.AddOAuth("Github", "Github", options =>
+                // {
+                //     // You can define default configuration for managed handlers.
+                //     options.AuthorizationEndpoint = "https://github.com/login/oauth/authorize";
+                //     options.TokenEndpoint = "https://github.com/login/oauth/access_token";
+                //     options.UserInformationEndpoint = "https://api.github.com/user";
+                //     options.ClaimsIssuer = "OAuth2-Github";
+                //     // Retrieving user information is unique to each provider.
+                //     options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+                //     options.ClaimActions.MapJsonKey(ClaimTypes.Name, "login");
+                //     options.ClaimActions.MapJsonKey("urn:github:name", "name");
+                //     options.ClaimActions.MapJsonKey(ClaimTypes.Email, "email", ClaimValueTypes.Email);
+                //     options.ClaimActions.MapJsonKey("urn:github:url", "url");
+                //     options.Events = new OAuthEvents
+                //     {
+                //         OnCreatingTicket = async context =>
+                //         {
+                //             // Get the GitHub user
+                //             var request = new HttpRequestMessage(HttpMethod.Get, context.Options.UserInformationEndpoint);
+                //             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.AccessToken);
+                //             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //             // A user-agent header is required by GitHub. See (https://developer.github.com/v3/#user-agent-required)
+                //             request.Headers.UserAgent.Add(new ProductInfoHeaderValue("DynamicAuthProviders-sample", "1.0.0"));
+
+                //             var response = await context.Backchannel.SendAsync(request, context.HttpContext.RequestAborted);
+                //             var content = await response.Content.ReadAsStringAsync();
+                //             response.EnsureSuccessStatusCode();
+
+                //             JsonElement user = JsonSerializer.Deserialize<JsonElement>(content);
+                //             context.RunClaimActions(user);
+                //         }
+                //     };
+                // });
         }
 
         private static void ConfigureSwaggerServices(ServiceConfigurationContext context)
@@ -196,6 +242,17 @@ namespace Thor.SSO
             });
         }
 
+        public override void OnPostApplicationInitialization(ApplicationInitializationContext context)
+        {
+            base.OnPreApplicationInitialization(context);
+
+            var app = context.GetApplicationBuilder();
+            var env = context.GetEnvironment();
+
+            // load dynamic authentication configuration from store - after ID4 is loaded, but before it is called
+            app.LoadDynamicAuthenticationConfiguration<SchemeDefinition>();
+        }
+
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
         {
             var app = context.GetApplicationBuilder();
@@ -222,6 +279,7 @@ namespace Thor.SSO
             }
             app.UseCors(DefaultCorsPolicyName);
             app.UseAuthentication();
+
             app.UseJwtTokenMiddleware();
 
             if (MultiTenancyConsts.IsEnabled)
