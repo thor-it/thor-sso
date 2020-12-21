@@ -23,6 +23,7 @@ namespace Thor.SSO
 #else
                 .MinimumLevel.Information()
 #endif
+                .MinimumLevel.Override("Volo.Abp.Modularity", LogEventLevel.Warning)
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
                 .Enrich.FromLogContext()

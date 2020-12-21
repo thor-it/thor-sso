@@ -28,6 +28,13 @@ using Volo.Abp.Swashbuckle;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
 using Thor.SSO.Extensions;
+using Aguacongas.AspNetCore.Authentication.EntityFramework;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Newtonsoft.Json.Linq;
+using System.Net.Http.Headers;
+using System.Text.Json;
 
 namespace Thor.SSO
 {
@@ -123,8 +130,8 @@ namespace Thor.SSO
 
         private void ConfigureAuthentication(ServiceConfigurationContext context, IConfiguration configuration)
         {
-            context.Services
-                  .AddAuthentication()
+            var dynamicAuthBuilder = context.Services
+                .AddAuthentication()
                 .AddJwtBearer(options =>
                 {
                     options.Authority = configuration["AuthServer:Authority"];
@@ -137,12 +144,18 @@ namespace Thor.SSO
                             HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
                     };
                 })
-                .AddGoogle("Google", options =>
-                {
-                    options.ClientId = configuration["SingleSignOn:Google:ClientId"];
-                    options.ClientSecret = configuration["SingleSignOn:Google:ClientSecret"];
-                    options.Scope.Add("email");
-                });
+                .AddDynamic<SchemeDefinition>()
+                .AddEntityFrameworkStore<SchemeDbContext>();
+
+            dynamicAuthBuilder
+                .AddGoogle()
+                .AddOAuth("Github", "Github", null);
+                //.AddGoogle("Google", options =>
+                //{
+                //    options.ClientId = configuration["SingleSignOn:Google:ClientId"];
+                //    options.ClientSecret = configuration["SingleSignOn:Google:ClientSecret"];
+                //    options.Scope.Add("email");
+                //});
         }
 
         private static void ConfigureSwaggerServices(ServiceConfigurationContext context)
@@ -196,6 +209,17 @@ namespace Thor.SSO
             });
         }
 
+        public override void OnPostApplicationInitialization(ApplicationInitializationContext context)
+        {
+            base.OnPreApplicationInitialization(context);
+
+            var app = context.GetApplicationBuilder();
+            var env = context.GetEnvironment();
+
+            // load dynamic authentication configuration from store - after ID4 is loaded, but before it is called
+            app.LoadDynamicAuthenticationConfiguration<SchemeDefinition>();
+        }
+
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
         {
             var app = context.GetApplicationBuilder();
@@ -222,6 +246,7 @@ namespace Thor.SSO
             }
             app.UseCors(DefaultCorsPolicyName);
             app.UseAuthentication();
+
             app.UseJwtTokenMiddleware();
 
             if (MultiTenancyConsts.IsEnabled)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Aguacongas.AspNetCore.Authentication.EntityFramework;
 using Volo.Abp.Modularity;
 
 namespace Thor.SSO.EntityFrameworkCore
@@ -10,7 +11,10 @@ namespace Thor.SSO.EntityFrameworkCore
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
-            context.Services.AddAbpDbContext<SSOMigrationsDbContext>();
+            context.Services
+                .AddAbpDbContext<SSOMigrationsDbContext>()
+                // Dynamic Authentication DbContext
+                .AddDbContext<SchemeDbContext>();
         }
     }
 }

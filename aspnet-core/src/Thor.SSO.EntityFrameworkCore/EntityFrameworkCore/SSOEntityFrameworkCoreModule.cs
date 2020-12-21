@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Aguacongas.AspNetCore.Authentication.EntityFramework;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -34,12 +36,17 @@ namespace Thor.SSO.EntityFrameworkCore
 
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
-            context.Services.AddAbpDbContext<SSODbContext>(options =>
-            {
-                /* Remove "includeAllEntities: true" to create
-                 * default repositories only for aggregate roots */
-                options.AddDefaultRepositories(includeAllEntities: true);
-            });
+            context.Services
+                .AddAbpDbContext<SSODbContext>(options =>
+                {
+                    /* Remove "includeAllEntities: true" to create
+                     * default repositories only for aggregate roots */
+                    options.AddDefaultRepositories(includeAllEntities: true);
+                })
+                // Dynamic Authentication DbContext
+                .AddDbContext<SchemeDbContext>(options =>
+                    options.UseSqlServer(context.Services.GetConfiguration().GetSection("ConnectionStrings:Default").Value)
+                );
 
             Configure<AbpDbContextOptions>(options =>
             {
