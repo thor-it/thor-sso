@@ -10,7 +10,22 @@
     ng-zorro-antd "^11.0.0"
     tslib "^2.0.0"
 
-"@abp/ng.core@4.0.2", "@abp/ng.core@~4.0.2":
+"@abp/ng.core@4.4.4":
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/@abp/ng.core/-/ng.core-4.4.4.tgz#e918d9fd68c88667569ef94c50eefa1271516f6d"
+  integrity sha512-w5TUdKJ13vm3YN4sebdO8Vwx9/LI3t78axmqdV+9AYPpg1cFTkNtzjMbsMO3+7qszwOdTwcpc3PVDu8V0EOjDA==
+  dependencies:
+    "@abp/utils" "~4.4.4"
+    "@angular/localize" "~10.0.10"
+    "@ngxs/store" "^3.7.0"
+    angular-oauth2-oidc "^10.0.0"
+    just-clone "^3.1.0"
+    just-compare "^1.3.0"
+    snq "^1.0.3"
+    ts-toolbelt "6.15.4"
+    tslib "^2.0.0"
+
+"@abp/ng.core@~4.0.2":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@abp/ng.core/-/ng.core-4.0.2.tgz#813f9c507bff2da98cc2fdab8c8b7995df5a3009"
   integrity sha512-dvfZUagqxbr5xLNFkq5K5dy8oP04M7nu6Y+Xi6rZm2+OXUGSgCkNYUeJGWv+mKy1Gc4XA9IeN1LqgNCKo9a/OQ==
@@ -105,6 +120,13 @@
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@abp/utils/-/utils-4.0.2.tgz#ebdbb25ee680d4874d049d4190446e64a75b512d"
   integrity sha512-+o0hvu9WE9a80Dj4gIxm05Xac1o0ypUrsfD1I5J7CcewNUu/9Dlk5qgwEksSaK/+GGVvUDkoEVDSJ74Td40W3A==
+  dependencies:
+    just-compare "^1.3.0"
+
+"@abp/utils@~4.4.4":
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/@abp/utils/-/utils-4.4.4.tgz#0bd79fa4635224fcae7ff61224a8c54266db73bf"
+  integrity sha512-h8Nt2OPqi8EiXKAuvJIpBlCHhavL7BHr+ntJXY6yM4aCdcQtJdSAgNmh0skzEGnf1hZxrYOugtAz4Pk1WNjv/g==
   dependencies:
     just-compare "^1.3.0"
 
