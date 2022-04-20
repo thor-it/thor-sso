@@ -33,8 +33,8 @@
   },
   "devDependencies": {
     "@abp/ng.schematics": "4.0.2",
-    "@angular-devkit/build-angular": "0.1100.3",
-    "@angular/cli": "11.0.3",
+    "@angular-devkit/build-angular": "0.1102.19",
+    "@angular/cli": "11.2.19",
     "@angular/compiler-cli": "11.2.14",
     "@angular/language-service": "11.2.14",
     "@types/jasmine": "3.5.14",
