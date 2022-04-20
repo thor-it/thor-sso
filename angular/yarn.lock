@@ -26,6 +26,21 @@
     ts-toolbelt "6.15.4"
     tslib "^2.0.0"
 
+"@abp/ng.core@~4.4.4":
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/@abp/ng.core/-/ng.core-4.4.4.tgz#e918d9fd68c88667569ef94c50eefa1271516f6d"
+  integrity sha512-w5TUdKJ13vm3YN4sebdO8Vwx9/LI3t78axmqdV+9AYPpg1cFTkNtzjMbsMO3+7qszwOdTwcpc3PVDu8V0EOjDA==
+  dependencies:
+    "@abp/utils" "~4.4.4"
+    "@angular/localize" "~10.0.10"
+    "@ngxs/store" "^3.7.0"
+    angular-oauth2-oidc "^10.0.0"
+    just-clone "^3.1.0"
+    just-compare "^1.3.0"
+    snq "^1.0.3"
+    ts-toolbelt "6.15.4"
+    tslib "^2.0.0"
+
 "@abp/ng.feature-management@~4.0.2":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@abp/ng.feature-management/-/ng.feature-management-4.0.2.tgz#8679a427fb7ac86979557f5d0f23b8b9a89e1dd5"
@@ -34,21 +49,21 @@
     "@abp/ng.theme.shared" "~4.0.2"
     tslib "^2.0.0"
 
-"@abp/ng.identity@4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@abp/ng.identity/-/ng.identity-4.0.2.tgz#41bb6eb9ba6539989569219e8b3ff4afe467e09b"
-  integrity sha512-Kt4IspbEKTo2YCxbrbYxtEUO2mOb6q7T61AksyiR4scCXOqiiMK+JIlLMJAvNnWEJkNt0SKQrBG4mF9VggvT7g==
+"@abp/ng.identity@4.4.4":
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/@abp/ng.identity/-/ng.identity-4.4.4.tgz#2b7b3439082b772a9f4de800dcf0ff3a8ee1b65c"
+  integrity sha512-B0re6RxKlikt+qGkBmgUyEHt9M4iMG8NglP42xeOnnbStnlJnx1ZI81+7mrcnxvJU3iNwDrWGV1CUGVQY7Zvmg==
   dependencies:
-    "@abp/ng.permission-management" "~4.0.2"
-    "@abp/ng.theme.shared" "~4.0.2"
+    "@abp/ng.permission-management" "~4.4.4"
+    "@abp/ng.theme.shared" "~4.4.4"
     tslib "^2.0.0"
 
-"@abp/ng.permission-management@~4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@abp/ng.permission-management/-/ng.permission-management-4.0.2.tgz#587fcd2b78fdc2a0ffb33b04477c810bc10deef9"
-  integrity sha512-nqV8V/wrxYtc0g3/PBZ6XP/lsCNvHH44chlISRhvy+FuNxzBphXD6VBWIXhTagiIaG9XGHX/w7WgZxqegMZvww==
+"@abp/ng.permission-management@~4.4.4":
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/@abp/ng.permission-management/-/ng.permission-management-4.4.4.tgz#8bb010de0aa4fb46c6807eda8b9db49dccf7018e"
+  integrity sha512-LcnYtXyDdGKXeJTUcsG/ZtwLzs6D8Au+M7Z3pO9ih/WxMmJBd+yCO0ekHIXe6XZW8DzSGWfRQfRrY1mmkcAhag==
   dependencies:
-    "@abp/ng.theme.shared" "~4.0.2"
+    "@abp/ng.theme.shared" "~4.4.4"
     tslib "^2.0.0"
 
 "@abp/ng.schematics@4.0.2":
@@ -101,10 +116,31 @@
     chart.js "^2.9.3"
     tslib "^2.0.0"
 
+"@abp/ng.theme.shared@~4.4.4":
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/@abp/ng.theme.shared/-/ng.theme.shared-4.4.4.tgz#45abe515727d8ef4a1764bb012bd7f2ffd16ce9b"
+  integrity sha512-NkDK+ZfT1D//M7PeehWnSzoYGQ84Cyb1gfySKfxMxrDRLcsiiJSBG8IHgCenuvP7LDs9qqXVRzD1pe8ESb9UCg==
+  dependencies:
+    "@abp/ng.core" "~4.4.4"
+    "@fortawesome/fontawesome-free" "^5.14.0"
+    "@ng-bootstrap/ng-bootstrap" "^7.0.0"
+    "@ngx-validate/core" "^0.0.13"
+    "@swimlane/ngx-datatable" "^17.1.0"
+    bootstrap "~4.6.0"
+    chart.js "^2.9.3"
+    tslib "^2.0.0"
+
 "@abp/utils@^4.0.1":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@abp/utils/-/utils-4.0.2.tgz#ebdbb25ee680d4874d049d4190446e64a75b512d"
   integrity sha512-+o0hvu9WE9a80Dj4gIxm05Xac1o0ypUrsfD1I5J7CcewNUu/9Dlk5qgwEksSaK/+GGVvUDkoEVDSJ74Td40W3A==
+  dependencies:
+    just-compare "^1.3.0"
+
+"@abp/utils@~4.4.4":
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/@abp/utils/-/utils-4.4.4.tgz#0bd79fa4635224fcae7ff61224a8c54266db73bf"
+  integrity sha512-h8Nt2OPqi8EiXKAuvJIpBlCHhavL7BHr+ntJXY6yM4aCdcQtJdSAgNmh0skzEGnf1hZxrYOugtAz4Pk1WNjv/g==
   dependencies:
     just-compare "^1.3.0"
 
@@ -2487,6 +2523,11 @@ bootstrap@^4.5.0:
   version "4.5.3"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.5.3.tgz#c6a72b355aaf323920be800246a6e4ef30997fe6"
   integrity sha512-o9ppKQioXGqhw8Z7mah6KdTYpNQY//tipnkxppWhPbiSWdD+1raYsnhwEZjkTHYbGee4cVQ0Rx65EhOY/HNLcQ==
+
+bootstrap@~4.6.0:
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.6.1.tgz#bc25380c2c14192374e8dec07cf01b2742d222a2"
+  integrity sha512-0dj+VgI9Ecom+rvvpNZ4MUZJz8dcX7WCX+eTID9+/8HgOkv3dsRzi8BGeZJCQU6flWQVYxwTQnEZFrmJSEO7og==
 
 brace-expansion@^1.1.7:
   version "1.1.11"
