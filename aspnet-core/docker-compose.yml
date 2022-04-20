@@ -10,7 +10,7 @@ services:
         networks:
             - loki
     loki:
-        image: grafana/loki:1.6.0
+        image: grafana/loki:1.6.1
         container_name: loki
         ports:
             - "3100:3100"
