@@ -5613,10 +5613,10 @@ karma-jasmine-html-reporter@1.5.4:
   resolved "https://registry.yarnpkg.com/karma-jasmine-html-reporter/-/karma-jasmine-html-reporter-1.5.4.tgz#669f33d694d88fce1b0ccfda57111de716cb0192"
   integrity sha512-PtilRLno5O6wH3lDihRnz0Ba8oSn0YUJqKjjux1peoYGwo0AQqrWRbdWk/RLzcGlb+onTyXAnHl6M+Hu3UxG/Q==
 
-karma-jasmine@4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/karma-jasmine/-/karma-jasmine-4.0.1.tgz#b99e073b6d99a5196fc4bffc121b89313b0abd82"
-  integrity sha512-h8XDAhTiZjJKzfkoO1laMH+zfNlra+dEQHUAjpn5JV1zCPtOIVWGQjLBrqhnzQa/hrU2XrZwSyBa6XjEBzfXzw==
+karma-jasmine@4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/karma-jasmine/-/karma-jasmine-4.0.2.tgz#386db2a3e1acc0af5265c711f673f78f1e4938de"
+  integrity sha512-ggi84RMNQffSDmWSyyt4zxzh2CQGwsxvYYsprgyR1j8ikzIduEdOlcLvXjZGwXG/0j41KUXOWsUCBfbEHPWP9g==
   dependencies:
     jasmine-core "^3.6.0"
 
