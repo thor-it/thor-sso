@@ -51,15 +51,16 @@
     "@abp/ng.theme.shared" "~4.0.2"
     tslib "^2.0.0"
 
-"@abp/ng.schematics@4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@abp/ng.schematics/-/ng.schematics-4.0.2.tgz#7b55cfcc87bd2f8d369341e97895298f298fb2c5"
-  integrity sha512-38SmmXXoxrTEMBXrtJC4omhp78OlHgum6gMrEhM6hm82XpUFtzUmdrv3ud6NB1/cu9OJ91/78J/u/yFmrcKx4A==
+"@abp/ng.schematics@4.4.4":
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/@abp/ng.schematics/-/ng.schematics-4.4.4.tgz#c4d14c0d6a41634e23a5e940f6420c001a7bfbb0"
+  integrity sha512-QihrOd2+mQ9aenVjxQBjim/+lXxkQJtogaBuzdkdz/2GEcW2shbqmBF4eCp5E7+F4SBgrLcj40ZmtNwMjJppbA==
   dependencies:
     "@angular-devkit/core" "~11.0.2"
     "@angular-devkit/schematics" "~11.0.2"
     got "^11.5.2"
     jsonc-parser "^2.3.0"
+    should-quote "^1.0.0"
     typescript "~3.9.2"
 
 "@abp/ng.setting-management@4.0.2":
@@ -8895,6 +8896,11 @@ shebang-regex@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
   integrity sha1-2kL0l0DAtC2yypcoVxyxkMmO/qM=
+
+should-quote@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/should-quote/-/should-quote-1.0.0.tgz#18e58cb92a3fecb6e163cf92c8158847058589d7"
+  integrity sha512-mQN5Meec3CTPmykzwXfDGWDpi75HUD8NT21wRWaJ7oqxpFIhXq80Hiy4ziccUNOwzhWeFkT9/kNSZbaugL9jsA==
 
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.3"
