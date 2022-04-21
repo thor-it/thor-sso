@@ -1,5 +1,25 @@
 {
   "extends": [
     "config:base"
+  ],
+  "assignees": ["davidzwa"],
+  "labels": ["renovate"],
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
+      "automerge": true
+    },
+    {
+      "matchPackagePatterns": [
+        "@abp/*",
+        "Volo.Abp*"
+      ],
+      "groupName": "Volo.Abp"
+    }
   ]
 }
