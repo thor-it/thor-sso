@@ -32,7 +32,7 @@
     "zone.js": "0.11.5"
   },
   "devDependencies": {
-    "@abp/ng.schematics": "4.0.2",
+    "@abp/ng.schematics": "4.4.4",
     "@angular-devkit/build-angular": "0.1102.19",
     "@angular/cli": "11.2.19",
     "@angular/compiler-cli": "11.2.14",
